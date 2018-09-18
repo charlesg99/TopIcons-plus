@@ -115,10 +115,11 @@ function onTrayIconRemoved(o, icon) {
       return;
     }
 
-    let parent = icon.get_parent();
-    if (parent)
-         parent.destroy();
-    icon.destroy();
+    let item = icon.get_parent() || icon;
+    
+    if (item)
+        item.destroy();
+    
     icons.splice(icons.indexOf(icon), 1);
 
     if (icons.length === 0)
@@ -177,7 +178,7 @@ function createTray() {
     tray = new Shell.TrayManager();
     tray.connect('tray-icon-added', onTrayIconAdded);
     tray.connect('tray-icon-removed', onTrayIconRemoved);
-    tray.manage_screen(global.screen, Main.panel.actor);
+    tray.manage_screen(Main.panel.actor);
     placeTray();
 }
 
